@@ -1,6 +1,6 @@
 # KinectFusion-RealSense-AE
 
-<img src="https://i.ibb.co/hWsvV1j/Unbenannt.png" alt="Unbenannt" border="0" />
+<img src="https://i.ibb.co/hWsvV1j/Unbenannt.png" alt="Unbenannt" border="0" width="500" />
 
 
 ## Dependencies
