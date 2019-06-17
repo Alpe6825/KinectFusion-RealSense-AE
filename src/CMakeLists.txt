@@ -1,9 +1,9 @@
 #   CmakeLists for KinectFusion-RealSense-AE
 message(STATUS "How to build: \n
 - use OpenCV 4.1 in Release Build\n
-- build RealSense in a subdirectory "build" of the root dir as Release build\n")
+- build RealSense in a subdirectory \"build\" of the root dir as Release build\n")
 
-set(OpenCV_INSTALL_ROOT "Where is OpenCV installed (e.g. D:/Alexander_Pech/OpenCV/opencv-4.1.0/build/install" CACHE FILEPATH "Root directory of OpenCV")
+set(OpenCV_INSTALL_ROOT "Where is OpenCV installed (e.g. D:/Alexander_Pech/OpenCV/opencv-4.1.0/build/install)" CACHE FILEPATH "Root directory of OpenCV")
 find_path(OpenCV_INCLUDE opencv2/core.hpp HINTS "${OpenCV_INSTALL_ROOT}/include")
 find_path(OpenCV_LIBRARY_PATH opencv_core410.lib HINTS 	"${OpenCV_INSTALL_ROOT}/x64/vc16/lib"
 														"${OpenCV_INSTALL_ROOT}/x64/vc15/lib")

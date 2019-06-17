@@ -24,3 +24,6 @@ endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
 # Add subdir with additional CMakeLists.txt and files
 add_subdirectory("${CMAKE_SOURCE_DIR}/src") # hier sucht er nach weiteren cmakescripts in dem ordner
+
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT KinectFusion-RealSense-AE)
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type (default RelWithDepInfo)" FORCE)
