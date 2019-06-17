@@ -18,6 +18,21 @@
 | LIBREALSENSE_INCLUDE_DIR | *C:/Program Files (x86)/Intel RealSense SDK 2.0/include* |
 | LIBREALSENSE_LIBRARIES | *C:/Program Files (x86)/Intel RealSense SDK 2.0/lib/x64/realsense2.lib* (for 64bit) |
     
+## DLLs:
+
+Copy the follwing Dlls to folder, which contains the .exe.
+
+- opencv_calib3d410.dll
+- opencv_core410.dll
+- opencv_features2d410.dll
+- opencv_flann410.dll
+- opencv_highgui410.dll
+- opencv_imgcodecs410.dll
+- opencv_imgproc410.dll
+- opencv_rgbd410.dll
+- opencv_videoio410.dll
+- realsense2.dll
+
 
 #
 Based on:
