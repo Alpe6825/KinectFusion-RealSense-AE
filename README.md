@@ -20,7 +20,7 @@
     
 ## DLLs:
 
-Copy the follwing Dlls to folder, which contains the .exe.
+Copy the follwing Dlls to the folder, which contains the .exe.
 
 - opencv_calib3d410.dll
 - opencv_core410.dll
