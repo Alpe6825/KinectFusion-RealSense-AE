@@ -5,6 +5,7 @@
 // (1) Include Header
 #include <opencv2/opencv.hpp>
 #include <opencv2/rgbd.hpp>
+//#include <opencv2/core/core.hpp>
 
 int main(int argc, char** argv)
 {
@@ -71,6 +72,23 @@ int main(int argc, char** argv)
 		}
 		if (key == 'q') {
 			break;
+		}
+		if (key == 's') {
+			std::cout << "safe" << std::endl;
+
+			cv::Mat points, normals;
+
+			kinfu->getCloud(points, normals);
+
+			std::cout << "Points: " << std::endl << points.rows << std::endl;
+			std::cout << "Normals: " << std::endl << normals.rows << std::endl;
+
+			std::cout << "Points: " << std::endl << points << std::endl;
+			std::cout << "Normals: " << std::endl << normals << std::endl;
+
+
+			break;
+
 		}
 	}
 
