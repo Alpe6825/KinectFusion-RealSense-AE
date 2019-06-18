@@ -13,8 +13,8 @@ find_path(RealSense2_INCLUDE librealsense2/rs.h HINTS "${RealSense2_INSTALL_ROOT
 find_path(RealSense2_LIBRARY_PATH realsense2.lib HINTS 	"${RealSense2_INSTALL_ROOT}/build/Release"
 														"${RealSense2_INSTALL_ROOT}/built/Release")
 
-include_directories(${CMAKE_BINARY_DIR}/src ${OpenCV_INCLUDE} ${RealSense2_INCLUDE})
-link_directories(${CMAKE_BINARY_DIR}/lib "${CMAKE_BINARY_DIR}/lib" ${OpenCV_LIBRARY_PATH} ${RealSense2_LIBRARY_PATH})
+include_directories(${CMAKE_BINARY_DIR}/src ${OpenCV_INCLUDE} ${RealSense2_INCLUDE} ${PCL_INCLUDE_DIRS})
+link_directories(${CMAKE_BINARY_DIR}/lib "${CMAKE_BINARY_DIR}/lib" ${OpenCV_LIBRARY_PATH} ${RealSense2_LIBRARY_PATH} ${PCL_LIBRARY_DIRS})
 file(GLOB_RECURSE KFRSAE_HEADER "${CMAKE_CURRENT_SRC_DIR}" *.h)
 file(GLOB_RECURSE KFRSAE_SRC "${CMAKE_CURRENT_SRC_DIR}" *.cpp)
 add_executable(KinectFusion-RealSense-AE ${KFRSAE_HEADER} ${KFRSAE_SRC})
@@ -27,4 +27,5 @@ target_link_libraries(KinectFusion-RealSense-AE
     debug opencv_videoio410${CMAKE_DEBUG_POSTFIX} optimized opencv_videoio410
     debug opencv_rgbd410${CMAKE_DEBUG_POSTFIX} optimized opencv_rgbd410
     debug realsense2${CMAKE_DEBUG_POSTFIX} optimized realsense2
+	${PCL_LIBRARIES}
 )

@@ -2,10 +2,14 @@
 #include <cmath>
 #include <limits>
 
+#include "objExporter.h";
+
 // (1) Include Header
 #include <opencv2/opencv.hpp>
 #include <opencv2/rgbd.hpp>
 //#include <opencv2/core/core.hpp>
+
+#include <pcl/point_types.h>
 
 int main(int argc, char** argv)
 {
@@ -80,12 +84,13 @@ int main(int argc, char** argv)
 
 			kinfu->getCloud(points, normals);
 
-			std::cout << "Points: " << std::endl << points.rows << std::endl;
+			std::cout << "Points: " << std::endl << points.rows << " " << points.cols << std::endl;
 			std::cout << "Normals: " << std::endl << normals.rows << std::endl;
 
-			std::cout << "Points: " << std::endl << points << std::endl;
-			std::cout << "Normals: " << std::endl << normals << std::endl;
+			//std::cout << "Points: " << std::endl << points << std::endl;
+			//std::cout << "Normals: " << std::endl << normals << std::endl;
 
+			objExporter("test.obj", points, normals);
 
 			break;
 
