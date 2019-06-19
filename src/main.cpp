@@ -3,13 +3,14 @@
 #include <limits>
 
 #include "objExporter.h";
+#include "pcdExporter.h";
 
 // (1) Include Header
 #include <opencv2/opencv.hpp>
 #include <opencv2/rgbd.hpp>
-//#include <opencv2/core/core.hpp>
 
-#include <pcl/point_types.h>
+#include <pcl/surface/marching_cubes_hoppe.h>
+
 
 int main(int argc, char** argv)
 {
@@ -81,18 +82,78 @@ int main(int argc, char** argv)
 			std::cout << "safe" << std::endl;
 
 			cv::Mat points, normals;
-
 			kinfu->getCloud(points, normals);
 
 			std::cout << "Points: " << std::endl << points.rows << " " << points.cols << std::endl;
-			std::cout << "Normals: " << std::endl << normals.rows << std::endl;
+			std::cout << "Normals: " << std::endl << normals.rows << std::endl << std::endl;
 
-			//std::cout << "Points: " << std::endl << points << std::endl;
-			//std::cout << "Normals: " << std::endl << normals << std::endl;
+			std::cout << "PointCloud Speichern in .obj (press 'o'), .pcd (press 'p')" << std::endl;
 
-			objExporter("test.obj", points, normals);
+			char select = std::cin.get();
+
+			switch (select)
+			{
+			case 'o':
+				objExporter("test.obj", points, normals);
+				break;
+			case 'p':
+				pcdExporter("test.pcd", points, normals);
+				break;
+			default:
+				std::cout << "kein Format gewählt";
+				break;
+			}
 
 			break;
+
+		}
+		if (key == 'm') {
+			std::cout << "Marching Cubs" << std::endl;
+
+			//https://github.com/rhololkeolke/EECS-466-Project/blob/master/src/pcl_reconstruction/pcl_marching_cubes.cpp
+
+			pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals(new pcl::PointCloud<pcl::PointNormal>);
+
+				cv::Mat points, normals;
+				kinfu->getCloud(points, normals);
+				std::cout << "Points: " << std::endl << points.rows << " " << points.cols << std::endl;
+				std::cout << "Normals: " << std::endl << normals.rows << std::endl;
+				for (int i = 0; i < points.rows; i++) {
+
+					pcl::PointNormal pointNormal;
+					pointNormal.x = points.at<float>(i, 0);
+					pointNormal.y = points.at<float>(i, 1);
+					pointNormal.z = points.at<float>(i, 2);
+					pointNormal.normal_x = normals.at<float>(i, 0);
+					pointNormal.normal_y = normals.at<float>(i, 1);
+					pointNormal.normal_z = normals.at<float>(i, 2);
+
+					cloud_with_normals->push_back(pointNormal);
+				}
+
+				
+			std::cout << cloud_with_normals->points.size() << " points in Point Cloud" << std::endl;
+
+			
+			pcl::search::KdTree<pcl::PointNormal>::Ptr tree(new pcl::search::KdTree<pcl::PointNormal>);
+			tree->setInputCloud(cloud_with_normals);
+
+			pcl::MarchingCubesHoppe<pcl::PointNormal> mc; 
+			pcl::PolygonMesh triangles;
+
+			mc.setGridResolution(100, 100, 100);
+			mc.setIsoLevel(0);
+			mc.setPercentageExtendGrid(0);
+
+			mc.setInputCloud(cloud_with_normals);
+			mc.setSearchMethod(tree);
+			mc.reconstruct(triangles);
+
+			std::cout << triangles.polygons.size() << " polygons in reconstructed mesh" << std::endl;
+
+			objExporter("test.obj", points, normals, triangles);
+			
+		    break;
 
 		}
 	}
