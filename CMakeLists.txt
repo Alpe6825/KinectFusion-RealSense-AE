@@ -22,8 +22,12 @@ endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 #FIND_PACKAGE( OpenCV4 REQUIRED ) # Hier sucht er in /cmake/Modules/ nach einem cmake script mit dem name FindOpenSceneGraph
 
+set(CURRENT_DEPS_PATH ${CMAKE_BINARY_DIR}/deps/pcl-1910/)
+FIND_PACKAGE (PCL PATHS "${CURRENT_DEPS_PATH}" NO_DEFAULT_PATH)
+
 # Add subdir with additional CMakeLists.txt and files
 add_subdirectory("${CMAKE_SOURCE_DIR}/src") # hier sucht er nach weiteren cmakescripts in dem ordner
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT KinectFusion-RealSense-AE)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type (default RelWithDepInfo)" FORCE)
+
