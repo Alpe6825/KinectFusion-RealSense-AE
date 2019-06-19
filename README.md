@@ -6,6 +6,7 @@
 ## Dependencies
 * OpenCV 4.1 with Contrib
 * RealSense SDK 2.0
+* PointCloud Library
 
 ## Build OpenCV with CMake
 
@@ -32,6 +33,7 @@ Copy the follwing Dlls to the folder, which contains the .exe.
 - opencv_imgproc410.dll
 - opencv_rgbd410.dll
 - opencv_videoio410.dll
+
 <b>RealSense</b>
 - realsense2.dll
 
