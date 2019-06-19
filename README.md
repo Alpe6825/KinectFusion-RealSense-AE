@@ -22,6 +22,7 @@
 
 Copy the follwing Dlls to the folder, which contains the .exe.
 
+<b>OpenCV</b>
 - opencv_calib3d410.dll
 - opencv_core410.dll
 - opencv_features2d410.dll
@@ -31,6 +32,7 @@ Copy the follwing Dlls to the folder, which contains the .exe.
 - opencv_imgproc410.dll
 - opencv_rgbd410.dll
 - opencv_videoio410.dll
+<b>RealSense</b>
 - realsense2.dll
 
 
