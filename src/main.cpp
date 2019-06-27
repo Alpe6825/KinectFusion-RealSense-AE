@@ -12,8 +12,16 @@
 #include <pcl/surface/marching_cubes_hoppe.h>
 
 
+
+bool restart = false;
+static void setRestart(int, void*) {
+	restart = true;
+}
+
 int main(int argc, char** argv)
 {
+
+
 	// (2) Set Optimized
 	cv::setUseOptimized(true);
 
@@ -38,9 +46,58 @@ int main(int argc, char** argv)
 	//params = cv::kinfu::Params::coarseParams(); // Coarse Parameters
 
 	params->frameSize = cv::Size(width, height); // Frame Size
-	params->intr = camera_matrix;             // Camera Intrinsics
-	params->depthFactor = 1000.0f;                   // Depth Factor (1000/meter)
+	params->intr = camera_matrix;				 // Camera Intrinsics
+	params->depthFactor = 1000.0f;               // Depth Factor (1000/meter)
+	
 
+	/*###################### GUI ##############################################*/
+
+	//Params in Int
+	//int bilateral_kernel_size;
+	int bilateral_sigma_depth = (int)(params->bilateral_sigma_depth * 100);
+	int bilateral_sigma_spatial = (int)(params->bilateral_sigma_spatial * 10);;
+	int depthFactor = (int)params->depthFactor;
+	int frameSize;
+	int icpAngleThresh;
+	int icpDistThresh;
+	int icpIterations;
+	int intr;
+	int lightPose;
+	int pyramidLevels;
+	int raycast_step_factor;
+	int truncateThreshold = (int)params->truncateThreshold;
+	//int tsdf_max_weight;
+	int tsdf_min_camera_movement = (int)params->tsdf_min_camera_movement;
+	int tsdf_trunc_dist = (int)(params->tsdf_trunc_dist * 100);
+	//int volumeDims;
+	int volumePose;
+	int voxelSize;
+
+	cv::namedWindow("KinFu Params", cv::WINDOW_NORMAL);
+
+	cv::createTrackbar("bilateral_kernel_size", "KinFu Params", &params->bilateral_kernel_size, 10, setRestart);
+	cv::createTrackbar("bilateral_sigma_depth", "KinFu Params", &bilateral_sigma_depth, 10, setRestart);
+	cv::createTrackbar("bilateral_sigma_spatial", "KinFu Params", &bilateral_sigma_spatial, 100, setRestart);
+	
+	//cv::createTrackbar("frameSize _ x", "KinFu Params", &params->frameSize[0], 100, setRestart);
+	//cv::createTrackbar("frameSize _ y", "KinFu Params", &params->frameSize[1], 100, setRestart);
+
+	
+	cv::createTrackbar("depthFactor", "KinFu Params", &depthFactor, 2000, setRestart);
+
+	cv::createTrackbar("truncateThreshold", "KinFu Params", &truncateThreshold, 512, setRestart);
+	cv::createTrackbar("tsdf_max_weight", "KinFu Params", &params->tsdf_max_weight, 512, setRestart);
+	cv::createTrackbar("tsdf_min_camera_movement", "KinFu Params", &tsdf_min_camera_movement, 10, setRestart);
+	cv::createTrackbar("tsdf_trunc_dist", "KinFu Params", &tsdf_trunc_dist, 10, setRestart);
+	
+	cv::createTrackbar("volumeDims X", "KinFu Params", &params->volumeDims[0], 512, setRestart);
+	cv::createTrackbar("volumeDims Y", "KinFu Params", &params->volumeDims[1], 512, setRestart);
+	cv::createTrackbar("volumeDims Z", "KinFu Params", &params->volumeDims[2], 512, setRestart);
+	
+
+
+
+	restart:
 	// (6) Create KinFu
 	cv::Ptr<cv::kinfu::KinFu> kinfu;
 	kinfu = cv::kinfu::KinFu::create(params);
@@ -78,6 +135,34 @@ int main(int argc, char** argv)
 		if (key == 'q') {
 			break;
 		}
+		if (key == 'p') {
+			cv::kinfu::Params currentParams = kinfu->getParams();
+
+			std::cout << "bilateral_kernel_size:\t" << currentParams.bilateral_kernel_size << std::endl;
+			std::cout << "bilateral_sigma_depth:\t" << currentParams.bilateral_sigma_depth << std::endl;
+			std::cout << "bilateral_sigma_spatial:\t" << currentParams.bilateral_sigma_spatial << std::endl;
+			std::cout << "depthFactor:\t" << currentParams.depthFactor << std::endl;
+			std::cout << "frameSize:\t" << currentParams.frameSize << std::endl;
+			std::cout << "icpAngleThresh:\t" << currentParams.icpAngleThresh << std::endl;
+			std::cout << "icpDistThresh:\t" << currentParams.icpDistThresh << std::endl;
+			std::cout << "icpIterations:\t" /*<< currentParams.icpIterations*/ << std::endl;
+			std::cout << "intr:\t" << currentParams.intr << std::endl;
+			std::cout << "lightPose:\t" << currentParams.lightPose << std::endl;
+			std::cout << "pyramidLevels:\t" << currentParams.pyramidLevels << std::endl;
+			std::cout << "raycast_step_factor:\t" << currentParams.raycast_step_factor << std::endl;
+			std::cout << "truncateThreshold:\t" << currentParams.truncateThreshold << std::endl;
+			std::cout << "tsdf_max_weight:\t" << currentParams.tsdf_max_weight << std::endl;
+			std::cout << "tsdf_min_camera_movement:\t" << currentParams.tsdf_min_camera_movement << std::endl;
+			std::cout << "tsdf_trunc_dist:\t" << currentParams.tsdf_trunc_dist << std::endl;
+			std::cout << "volumeDims:\t" << currentParams.volumeDims << std::endl;
+			std::cout << "volumePose:\t" /*<< currentParams.volumePose*/ << std::endl;
+			std::cout << "voxelSize:\t" << currentParams.voxelSize << std::endl;
+		}
+		if (key == 't') {
+			params->truncateThreshold = 1;
+			goto restart;
+		}
+
 		if (key == 's') {
 			std::cout << "safe" << std::endl;
 
@@ -107,7 +192,7 @@ int main(int argc, char** argv)
 			break;
 
 		}
-		if (key == 'm') {
+		/*if (key == 'm') {
 			std::cout << "Marching Cubs" << std::endl;
 
 			//https://github.com/rhololkeolke/EECS-466-Project/blob/master/src/pcl_reconstruction/pcl_marching_cubes.cpp
@@ -155,6 +240,21 @@ int main(int argc, char** argv)
 			
 		    break;
 
+		}*/
+		if (restart == true) {
+			restart = false;
+
+
+			params->bilateral_sigma_depth = (float)bilateral_sigma_depth/100;
+			params->bilateral_sigma_spatial = (float)bilateral_sigma_spatial / 10;
+
+			params->depthFactor = (float)depthFactor;
+
+			params->truncateThreshold = (float)truncateThreshold;
+			params->tsdf_min_camera_movement = (float)tsdf_min_camera_movement;
+			params->tsdf_trunc_dist = (float)tsdf_trunc_dist / 100;
+		
+			goto restart;
 		}
 	}
 
