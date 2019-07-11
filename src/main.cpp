@@ -90,9 +90,9 @@ int main(int argc, char** argv)
 	cv::createTrackbar("tsdf_min_camera_movement", "KinFu Params", &tsdf_min_camera_movement, 10, setRestart);
 	cv::createTrackbar("tsdf_trunc_dist", "KinFu Params", &tsdf_trunc_dist, 10, setRestart);
 	
-	cv::createTrackbar("volumeDims X", "KinFu Params", &params->volumeDims[0], 512, setRestart);
-	cv::createTrackbar("volumeDims Y", "KinFu Params", &params->volumeDims[1], 512, setRestart);
-	cv::createTrackbar("volumeDims Z", "KinFu Params", &params->volumeDims[2], 512, setRestart);
+	cv::createTrackbar("volumeDims X", "KinFu Params", &params->volumeDims[0], 1024, setRestart);
+	cv::createTrackbar("volumeDims Y", "KinFu Params", &params->volumeDims[1], 1024, setRestart);
+	cv::createTrackbar("volumeDims Z", "KinFu Params", &params->volumeDims[2], 1024, setRestart);
 	
 
 
